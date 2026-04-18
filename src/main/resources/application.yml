@@ -1,0 +1,17 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: custos-node
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+custos:
+  node-id: local-node-1
+  api:
+    base-path: /api/v1

@@ -1,0 +1,46 @@
+package io.custos.node.adapters.in.web;
+
+import io.custos.node.application.exception.InvalidPublisherSignatureException;
+import io.custos.node.application.exception.InvalidWalletSignatureException;
+import io.custos.node.application.exception.SecretAccessDeniedException;
+import io.custos.node.application.exception.SecretNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.time.Instant;
+import java.util.Map;
+
+@RestControllerAdvice
+public class ApiExceptionHandler {
+
+    @ExceptionHandler(SecretNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleNotFound(SecretNotFoundException ex) {
+        return response(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler({
+            InvalidPublisherSignatureException.class,
+            InvalidWalletSignatureException.class,
+            SecretAccessDeniedException.class
+    })
+    public ResponseEntity<Map<String, Object>> handleForbidden(RuntimeException ex) {
+        return response(HttpStatus.FORBIDDEN, ex.getMessage());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException ex) {
+        return response(HttpStatus.BAD_REQUEST, "Invalid request payload");
+    }
+
+    private ResponseEntity<Map<String, Object>> response(HttpStatus status, String message) {
+        return ResponseEntity.status(status).body(Map.of(
+                "timestamp", Instant.now().toString(),
+                "status", status.value(),
+                "error", status.getReasonPhrase(),
+                "message", message
+        ));
+    }
+}

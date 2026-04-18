@@ -1,5 +1,0 @@
-flask==3.0.3
-web3==6.19.0
-pyUmbral==0.5.0
-gunicorn==22.0.0
-
