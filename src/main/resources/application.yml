@@ -5,11 +5,28 @@ spring:
   application:
     name: custos-node
 
+  datasource:
+    url: jdbc:postgresql://localhost:5432/custos
+    username: custos
+    password: custos
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+
 management:
   endpoints:
     web:
       exposure:
         include: health,info
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
 
 custos:
   node-id: local-node-1

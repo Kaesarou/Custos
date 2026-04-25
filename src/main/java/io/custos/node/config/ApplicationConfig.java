@@ -1,7 +1,8 @@
 package io.custos.node.config;
 
 import io.custos.node.adapters.out.blockchain.StubAccessPolicyEvaluator;
-import io.custos.node.adapters.out.persistence.InMemorySecretShareRepository;
+import io.custos.node.adapters.out.persistence.jpa.JpaSecretShareRepository;
+import io.custos.node.adapters.out.persistence.jpa.SpringDataSecretShareRepository;
 import io.custos.node.adapters.out.security.AcceptAllPublisherSignatureVerifier;
 import io.custos.node.adapters.out.security.AcceptAllWalletSignatureVerifier;
 import io.custos.node.adapters.out.security.Base64ShareProtectionService;
@@ -20,8 +21,10 @@ import org.springframework.context.annotation.Configuration;
 public class ApplicationConfig {
 
     @Bean
-    SecretShareRepository secretShareRepository() {
-        return new InMemorySecretShareRepository();
+    SecretShareRepository secretShareRepository(
+            SpringDataSecretShareRepository springDataSecretShareRepository
+    ) {
+        return new JpaSecretShareRepository(springDataSecretShareRepository);
     }
 
     @Bean
