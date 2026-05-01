@@ -34,4 +34,4 @@ custos:
     base-path: /api/v1
   chains:
     31337:
-      rpc-url: http://localhost:8545
+      rpc-url: http://custos-test-chain:8545

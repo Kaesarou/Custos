@@ -48,7 +48,7 @@ Le fichier `deployments/deployments.json` contient des exemples de policies :
 
 ```json
 {
-  "type": "ERC1155_BALANCE",
+  "type": "EVM_ERC1155_BALANCE",
   "chainId": 31337,
   "contract": "0x...",
   "holder": "0x...",
@@ -59,7 +59,7 @@ Le fichier `deployments/deployments.json` contient des exemples de policies :
 
 ```json
 {
-  "type": "ERC721_OWNERSHIP",
+  "type": "EVM_ERC721_OWNERSHIP",
   "chainId": 31337,
   "contract": "0x...",
   "holder": "0x...",
@@ -69,7 +69,7 @@ Le fichier `deployments/deployments.json` contient des exemples de policies :
 
 ```json
 {
-  "type": "ERC20_BALANCE",
+  "type": "EVM_ERC20_BALANCE",
   "chainId": 31337,
   "contract": "0x...",
   "holder": "0x...",

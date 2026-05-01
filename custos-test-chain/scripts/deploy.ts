@@ -103,20 +103,20 @@ async function main() {
     },
     examplePolicies: {
       erc1155Balance: {
-        type: "ERC1155_BALANCE",
+        type: "EVM_ERC1155_BALANCE",
         chainId: 31337,
         contractAddress: erc1155Address,
         tokenId: "1",
         minAmount: "1"
       },
       erc721Ownership: {
-        type: "ERC721_OWNERSHIP",
+        type: "EVM_ERC721_OWNERSHIP",
         chainId: 31337,
         contractAddress: erc721Address,
         tokenId: "1"
       },
       erc20Balance: {
-        type: "ERC20_BALANCE",
+        type: "EVM_ERC20_BALANCE",
         chainId: 31337,
         contractAddress: erc20Address,
         minAmount: ethers.parseEther("100").toString()
