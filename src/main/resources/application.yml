@@ -32,3 +32,6 @@ custos:
   node-id: local-node-1
   api:
     base-path: /api/v1
+  chains:
+    31337:
+      rpc-url: http://localhost:8545

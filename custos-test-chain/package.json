@@ -1,0 +1,21 @@
+{
+  "name": "custos-test-chain",
+  "version": "1.0.0",
+  "description": "Local Dockerized blockchain with generic test contracts for Custos access policy integration tests.",
+  "type": "module",
+  "scripts": {
+    "compile": "hardhat compile",
+    "node": "hardhat node --hostname 0.0.0.0",
+    "deploy": "hardhat run scripts/deploy.ts --network localhost",
+    "test:policy": "hardhat run scripts/check-policy-examples.ts --network localhost"
+  },
+  "dependencies": {
+    "@nomicfoundation/hardhat-ethers": "^4.0.0",
+    "@openzeppelin/contracts": "^5.0.0",
+    "ethers": "^6.13.0",
+    "hardhat": "^3.0.0",
+    "typescript": "^5.4.0",
+    "ts-node": "^10.9.2"
+  },
+  "devDependencies": {}
+}

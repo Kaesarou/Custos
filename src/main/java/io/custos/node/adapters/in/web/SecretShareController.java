@@ -5,8 +5,8 @@ import io.custos.node.adapters.in.web.dto.RegisterSecretShareRequest;
 import io.custos.node.adapters.in.web.dto.RegisterSecretShareResponse;
 import io.custos.node.adapters.in.web.dto.RequestShareRequest;
 import io.custos.node.adapters.in.web.dto.RequestShareResponse;
-import io.custos.node.application.port.in.RegisterSecretShareUseCase;
-import io.custos.node.application.port.in.RequestShareUseCase;
+import io.custos.node.application.port.in.RegisterSecretShareService;
+import io.custos.node.application.port.in.RequestShareService;
 import io.custos.node.application.port.in.command.RegisterSecretShareCommand;
 import io.custos.node.application.port.in.command.RequestShareCommand;
 import io.custos.node.domain.model.AccessPolicy;
@@ -20,21 +20,21 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("${custos.api.base-path:/api/v1}/secrets")
 public class SecretShareController {
 
-    private final RegisterSecretShareUseCase registerSecretShareUseCase;
-    private final RequestShareUseCase requestShareUseCase;
+    private final RegisterSecretShareService registerSecretShareService;
+    private final RequestShareService requestShareService;
 
     public SecretShareController(
-            RegisterSecretShareUseCase registerSecretShareUseCase,
-            RequestShareUseCase requestShareUseCase
+            RegisterSecretShareService registerSecretShareService,
+            RequestShareService requestShareService
     ) {
-        this.registerSecretShareUseCase = registerSecretShareUseCase;
-        this.requestShareUseCase = requestShareUseCase;
+        this.registerSecretShareService = registerSecretShareService;
+        this.requestShareService = requestShareService;
     }
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public RegisterSecretShareResponse register(@Valid @RequestBody RegisterSecretShareRequest request) {
-        registerSecretShareUseCase.register(new RegisterSecretShareCommand(
+        registerSecretShareService.register(new RegisterSecretShareCommand(
                 request.secretId(),
                 request.encryptedShare(),
                 toDomainPolicy(request.policy()),
@@ -46,7 +46,7 @@ public class SecretShareController {
 
     @PostMapping("/request-share")
     public RequestShareResponse requestShare(@Valid @RequestBody RequestShareRequest request) {
-        ShareDelivery delivery = requestShareUseCase.requestShare(new RequestShareCommand(
+        ShareDelivery delivery = requestShareService.requestShare(new RequestShareCommand(
                 request.secretId(),
                 request.userAddress(),
                 request.walletSignature(),

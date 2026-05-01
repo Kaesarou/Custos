@@ -3,39 +3,35 @@ package io.custos.node.application.service;
 import io.custos.node.application.exception.InvalidWalletSignatureException;
 import io.custos.node.application.exception.SecretAccessDeniedException;
 import io.custos.node.application.exception.SecretNotFoundException;
-import io.custos.node.application.port.in.RequestShareUseCase;
 import io.custos.node.application.port.in.command.RequestShareCommand;
-import io.custos.node.application.port.out.AccessPolicyEvaluator;
-import io.custos.node.application.port.out.NodeSignatureService;
-import io.custos.node.application.port.out.SecretShareRepository;
-import io.custos.node.application.port.out.ShareProtectionService;
-import io.custos.node.application.port.out.WalletSignatureVerifier;
+import io.custos.node.application.port.out.*;
+import io.custos.node.domain.PolicyValidationResult;
 import io.custos.node.domain.model.ShareDelivery;
 import io.custos.node.domain.model.StoredSecretShare;
 
 import java.time.Instant;
 
-public class RequestShareService implements RequestShareUseCase {
+public class RequestShareServiceImpl implements io.custos.node.application.port.in.RequestShareService {
 
     private final String nodeId;
     private final SecretShareRepository repository;
     private final WalletSignatureVerifier walletSignatureVerifier;
-    private final AccessPolicyEvaluator accessPolicyEvaluator;
+    private final PolicyValidationService policyValidationService;
     private final ShareProtectionService shareProtectionService;
     private final NodeSignatureService nodeSignatureService;
 
-    public RequestShareService(
+    public RequestShareServiceImpl(
             String nodeId,
             SecretShareRepository repository,
             WalletSignatureVerifier walletSignatureVerifier,
-            AccessPolicyEvaluator accessPolicyEvaluator,
+             PolicyValidationService policyValidationService,
             ShareProtectionService shareProtectionService,
             NodeSignatureService nodeSignatureService
     ) {
         this.nodeId = nodeId;
         this.repository = repository;
         this.walletSignatureVerifier = walletSignatureVerifier;
-        this.accessPolicyEvaluator = accessPolicyEvaluator;
+        this.policyValidationService = policyValidationService;
         this.shareProtectionService = shareProtectionService;
         this.nodeSignatureService = nodeSignatureService;
     }
@@ -49,8 +45,8 @@ public class RequestShareService implements RequestShareUseCase {
         StoredSecretShare stored = repository.findBySecretId(command.secretId())
                 .orElseThrow(() -> new SecretNotFoundException(command.secretId()));
 
-        boolean canAccess = accessPolicyEvaluator.canAccess(command.userAddress(), stored.accessPolicy());
-        if (!canAccess) {
+        PolicyValidationResult policyValidationResult = policyValidationService.validate(stored.accessPolicy(), command.userAddress());
+        if (!policyValidationResult.isValid()) {
             throw new SecretAccessDeniedException(command.secretId(), command.userAddress());
         }
 

@@ -1,0 +1,8 @@
+services:
+  custos-test-chain:
+    build: .
+    container_name: custos-test-chain
+    ports:
+      - "8545:8545"
+    volumes:
+      - ./deployments:/app/deployments
