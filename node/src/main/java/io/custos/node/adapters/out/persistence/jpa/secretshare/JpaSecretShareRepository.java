@@ -1,4 +1,4 @@
-package io.custos.node.adapters.out.persistence.jpa.share;
+package io.custos.node.adapters.out.persistence.jpa.secretshare;
 
 import io.custos.node.core.application.port.out.SecretShareRepository;
 import io.custos.node.core.domain.model.StoredSecretShare;

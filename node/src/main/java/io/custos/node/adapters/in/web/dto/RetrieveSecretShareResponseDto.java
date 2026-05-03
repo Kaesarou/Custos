@@ -1,6 +1,6 @@
 package io.custos.node.adapters.in.web.dto;
 
-public record RequestShareResponse(
+public record RetrieveSecretShareResponseDto(
         String secretId,
         String nodeId,
         String protectedShare,

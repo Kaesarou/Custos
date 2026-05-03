@@ -1,6 +1,6 @@
 package io.custos.node.core.application.exception;
 
-public enum SignatureErrorCode {
+public enum WalletSignatureErrorCode {
     MISSING_WALLET_SIGNATURE,
     MISSING_NONCE,
     INVALID_USER_ADDRESS,

@@ -1,20 +1,20 @@
 package io.custos.node.core.application.service;
 
 import io.custos.node.core.application.exception.InvalidPublisherSignatureException;
-import io.custos.node.core.application.port.in.RegisterSecretShareService;
-import io.custos.node.core.application.port.in.command.RegisterSecretShareCommand;
+import io.custos.node.core.application.port.in.StoreSecretShareUseCase;
+import io.custos.node.core.application.port.in.command.StoreSecretShareCommand;
 import io.custos.node.core.application.port.out.PublisherSignatureVerifier;
 import io.custos.node.core.application.port.out.SecretShareRepository;
 import io.custos.node.core.domain.model.StoredSecretShare;
 
 import java.time.Instant;
 
-public class RegisterSecretShareServiceImpl implements RegisterSecretShareService {
+public class StoreSecretShareService implements StoreSecretShareUseCase {
 
     private final SecretShareRepository repository;
     private final PublisherSignatureVerifier publisherSignatureVerifier;
 
-    public RegisterSecretShareServiceImpl(
+    public StoreSecretShareService(
             SecretShareRepository repository,
             PublisherSignatureVerifier publisherSignatureVerifier
     ) {
@@ -23,7 +23,7 @@ public class RegisterSecretShareServiceImpl implements RegisterSecretShareServic
     }
 
     @Override
-    public void register(RegisterSecretShareCommand command) {
+    public void register(StoreSecretShareCommand command) {
         if (!publisherSignatureVerifier.isValid(command)) {
             throw new InvalidPublisherSignatureException();
         }

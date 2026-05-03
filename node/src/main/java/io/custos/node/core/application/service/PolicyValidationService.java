@@ -11,7 +11,6 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-@Service
 public class PolicyValidationService {
 
     private final Map<PolicyType, AccessPolicyValidator> validators = new EnumMap<>(PolicyType.class);

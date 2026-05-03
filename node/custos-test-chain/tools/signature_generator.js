@@ -18,7 +18,6 @@ async function main() {
   const sig = await wallet.signMessage(message);
 
   console.log(JSON.stringify({
-    secretId,
     userAddress: wallet.address,
     walletSignature: sig,
     readerPublicKey: '0xREADER_PUBLIC_KEY_TEST',

@@ -1,4 +1,4 @@
-package io.custos.node.adapters.out.persistence.jpa.share;
+package io.custos.node.adapters.out.persistence.jpa.secretshare;
 
 import io.custos.node.core.domain.model.AccessPolicy;
 import io.custos.node.core.domain.model.PolicyType;
@@ -15,7 +15,7 @@ public final class SecretShareJpaMapper {
                 domain.encryptedShare(),
                 domain.accessPolicy().type().name(),
                 domain.accessPolicy().chainId(),
-                domain.accessPolicy().validatorContract(),
+                domain.accessPolicy().contractAddress(),
                 domain.accessPolicy().policyData(),
                 domain.publisherAddress(),
                 domain.createdAt()
@@ -29,7 +29,7 @@ public final class SecretShareJpaMapper {
                 new AccessPolicy(
                         PolicyType.valueOf(entity.getPolicyType()),
                         entity.getChainId(),
-                        entity.getValidatorContract(),
+                        entity.getContractAddress(),
                         entity.getPolicyData()
                 ),
                 entity.getPublisherAddress(),

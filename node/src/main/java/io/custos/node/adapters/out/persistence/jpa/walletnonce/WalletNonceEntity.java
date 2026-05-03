@@ -1,4 +1,4 @@
-package io.custos.node.adapters.out.persistence.jpa.nonce;
+package io.custos.node.adapters.out.persistence.jpa.walletnonce;
 
 import jakarta.persistence.*;
 

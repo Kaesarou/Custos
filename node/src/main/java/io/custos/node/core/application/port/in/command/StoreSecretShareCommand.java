@@ -2,7 +2,7 @@ package io.custos.node.core.application.port.in.command;
 
 import io.custos.node.core.domain.model.AccessPolicy;
 
-public record RegisterSecretShareCommand(
+public record StoreSecretShareCommand(
         String secretId,
         String encryptedShare,
         AccessPolicy accessPolicy,

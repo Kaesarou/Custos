@@ -3,8 +3,8 @@ package io.custos.node.config;
 import io.custos.node.adapters.out.security.AcceptAllPublisherSignatureVerifier;
 import io.custos.node.adapters.out.security.Base64ShareProtectionService;
 import io.custos.node.adapters.out.security.LocalNodeSignatureService;
-import io.custos.node.core.application.port.in.RegisterSecretShareService;
-import io.custos.node.core.application.port.in.RequestShareService;
+import io.custos.node.core.application.port.in.StoreSecretShareUseCase;
+import io.custos.node.core.application.port.in.RetrieveSecretShareUseCase;
 import io.custos.node.core.application.port.out.*;
 import io.custos.node.core.application.service.*;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -28,6 +28,11 @@ public class ApplicationConfig {
     }
 
     @Bean
+    WalletNonceService walletNonceService(WalletNonceRepository walletNonceRepository) {
+        return new WalletNonceService(walletNonceRepository);
+    }
+
+    @Bean
     ShareProtectionService shareProtectionService() {
         return new Base64ShareProtectionService();
     }
@@ -38,15 +43,15 @@ public class ApplicationConfig {
     }
 
     @Bean
-    RegisterSecretShareService registerSecretShareUseCase(
+    StoreSecretShareUseCase registerSecretShareUseCase(
             SecretShareRepository repository,
             PublisherSignatureVerifier publisherSignatureVerifier
     ) {
-        return new RegisterSecretShareServiceImpl(repository, publisherSignatureVerifier);
+        return new StoreSecretShareService(repository, publisherSignatureVerifier);
     }
 
     @Bean
-    RequestShareService requestShareUseCase(
+    RetrieveSecretShareUseCase requestShareUseCase(
             CustosProperties custosProperties,
             SecretShareRepository repository,
             WalletSignatureVerifier walletSignatureVerifier,
@@ -55,7 +60,7 @@ public class ApplicationConfig {
             ShareProtectionService shareProtectionService,
             NodeSignatureService nodeSignatureService
     ) {
-        return new RequestShareServiceImpl(
+        return new RetrieveSecretShareService(
                 custosProperties.nodeId(),
                 repository,
                 walletSignatureVerifier,

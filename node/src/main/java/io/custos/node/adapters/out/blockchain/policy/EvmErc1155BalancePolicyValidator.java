@@ -4,7 +4,7 @@ package io.custos.node.adapters.out.blockchain.policy;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.custos.node.core.application.port.out.AccessPolicyValidator;
 import io.custos.node.core.application.service.ChainRpcResolver;
-import io.custos.node.core.domain.Erc1155BalancePolicyData;
+import io.custos.node.core.domain.EvmErc1155BalancePolicyData;
 import io.custos.node.core.domain.PolicyValidationResult;
 import io.custos.node.core.domain.model.AccessPolicy;
 import io.custos.node.core.domain.model.PolicyType;
@@ -25,12 +25,12 @@ import java.math.BigInteger;
 import java.util.List;
 
 @Service
-public class Erc1155BalancePolicyValidator implements AccessPolicyValidator {
+public class EvmErc1155BalancePolicyValidator implements AccessPolicyValidator {
 
     private final ObjectMapper objectMapper;
     private final ChainRpcResolver chainRpcResolver;
 
-    public Erc1155BalancePolicyValidator(
+    public EvmErc1155BalancePolicyValidator(
             ObjectMapper objectMapper,
             ChainRpcResolver chainRpcResolver
     ) {
@@ -53,7 +53,7 @@ public class Erc1155BalancePolicyValidator implements AccessPolicyValidator {
             return PolicyValidationResult.invalid("INVALID_WALLET");
         }
 
-        if (!WalletUtils.isValidAddress(policy.validatorContract())) {
+        if (!WalletUtils.isValidAddress(policy.contractAddress())) {
             return PolicyValidationResult.invalid("INVALID_VALIDATOR_CONTRACT");
         }
 
@@ -63,10 +63,10 @@ public class Erc1155BalancePolicyValidator implements AccessPolicyValidator {
             return PolicyValidationResult.invalid("CHAIN_NOT_CONFIGURED");
         }
 
-        Erc1155BalancePolicyData policyData;
+        EvmErc1155BalancePolicyData policyData;
 
         try {
-            policyData = objectMapper.readValue(policy.policyData(), Erc1155BalancePolicyData.class);
+            policyData = objectMapper.readValue(policy.policyData(), EvmErc1155BalancePolicyData.class);
         } catch (Exception e) {
             return PolicyValidationResult.invalid("INVALID_POLICY_DATA");
         }
@@ -88,7 +88,7 @@ public class Erc1155BalancePolicyValidator implements AccessPolicyValidator {
         try {
             BigInteger balance = callErc1155BalanceOf(
                     rpcUrl.get(),
-                    policy.validatorContract(),
+                    policy.contractAddress(),
                     walletAddress,
                     tokenId
             );

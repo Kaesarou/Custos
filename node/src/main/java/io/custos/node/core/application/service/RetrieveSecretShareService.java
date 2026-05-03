@@ -2,8 +2,8 @@ package io.custos.node.core.application.service;
 
 import io.custos.node.core.application.exception.SecretAccessDeniedException;
 import io.custos.node.core.application.exception.SecretNotFoundException;
-import io.custos.node.core.application.port.in.RequestShareService;
-import io.custos.node.core.application.port.in.command.RequestShareCommand;
+import io.custos.node.core.application.port.in.RetrieveSecretShareUseCase;
+import io.custos.node.core.application.port.in.command.RetrieveSecretShareCommand;
 import io.custos.node.core.application.port.out.NodeSignatureService;
 import io.custos.node.core.application.port.out.SecretShareRepository;
 import io.custos.node.core.application.port.out.ShareProtectionService;
@@ -14,7 +14,7 @@ import io.custos.node.core.domain.model.StoredSecretShare;
 
 import java.time.Instant;
 
-public class RequestShareServiceImpl implements RequestShareService {
+public class RetrieveSecretShareService implements RetrieveSecretShareUseCase {
 
     private final String nodeId;
     private final SecretShareRepository repository;
@@ -24,7 +24,7 @@ public class RequestShareServiceImpl implements RequestShareService {
     private final ShareProtectionService shareProtectionService;
     private final NodeSignatureService nodeSignatureService;
 
-    public RequestShareServiceImpl(
+    public RetrieveSecretShareService(
             String nodeId,
             SecretShareRepository repository,
             WalletSignatureVerifier walletSignatureVerifier,
@@ -42,7 +42,7 @@ public class RequestShareServiceImpl implements RequestShareService {
     }
 
     @Override
-    public ShareDelivery requestShare(RequestShareCommand command) {
+    public ShareDelivery requestShare(RetrieveSecretShareCommand command) {
 
         walletSignatureVerifier.verifyRetrieveSecretSignature(
                 command.secretId(),

@@ -1,4 +1,4 @@
-package io.custos.node.adapters.out.persistence.jpa.share;
+package io.custos.node.adapters.out.persistence.jpa.secretshare;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,8 +24,8 @@ public class SecretShareEntity {
     @Column(name = "chain_id", nullable = false)
     private long chainId;
 
-    @Column(name = "validator_contract", nullable = false)
-    private String validatorContract;
+    @Column(name = "contract_address", nullable = false)
+    private String contractAddress;
 
     @Column(name = "policy_data", nullable = false, columnDefinition = "TEXT")
     private String policyData;
@@ -44,7 +44,7 @@ public class SecretShareEntity {
             String encryptedShare,
             String policyType,
             long chainId,
-            String validatorContract,
+            String contractAddress,
             String policyData,
             String publisherAddress,
             Instant createdAt
@@ -53,7 +53,7 @@ public class SecretShareEntity {
         this.encryptedShare = encryptedShare;
         this.policyType = policyType;
         this.chainId = chainId;
-        this.validatorContract = validatorContract;
+        this.contractAddress = contractAddress;
         this.policyData = policyData;
         this.publisherAddress = publisherAddress;
         this.createdAt = createdAt;
@@ -75,8 +75,8 @@ public class SecretShareEntity {
         return chainId;
     }
 
-    public String getValidatorContract() {
-        return validatorContract;
+    public String getContractAddress() {
+        return contractAddress;
     }
 
     public String getPolicyData() {

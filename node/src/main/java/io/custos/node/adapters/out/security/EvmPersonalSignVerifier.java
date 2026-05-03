@@ -2,7 +2,7 @@ package io.custos.node.adapters.out.security;
 
 import io.custos.node.core.application.exception.InvalidWalletSignatureException;
 import io.custos.node.core.application.port.out.WalletSignatureVerifier;
-import io.custos.node.core.application.service.WalletSignatureMessageBuilder;
+import io.custos.node.core.application.service.RetrieveSecretSignatureChallenge;
 import org.springframework.stereotype.Service;
 import org.web3j.crypto.Keys;
 import org.web3j.crypto.Sign;
@@ -13,10 +13,10 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-import static io.custos.node.core.application.exception.SignatureErrorCode.*;
+import static io.custos.node.core.application.exception.WalletSignatureErrorCode.*;
 
 @Service
-public class WalletSignatureVerifierImpl implements WalletSignatureVerifier {
+public class EvmPersonalSignVerifier implements WalletSignatureVerifier {
 
     public void verifyRetrieveSecretSignature(
             String secretId,
@@ -26,11 +26,11 @@ public class WalletSignatureVerifierImpl implements WalletSignatureVerifier {
     ) {
         validateInputs(userAddress, nonce, walletSignature);
 
-        String message = WalletSignatureMessageBuilder.buildRetrieveSecretMessage(
+        String message = new RetrieveSecretSignatureChallenge(
                 secretId,
                 userAddress,
                 nonce
-        );
+        ).message();
 
         String recoveredAddress = recoverAddress(message, walletSignature);
 

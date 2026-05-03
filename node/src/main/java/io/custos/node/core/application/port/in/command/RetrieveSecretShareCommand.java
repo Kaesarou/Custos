@@ -1,6 +1,6 @@
 package io.custos.node.core.application.port.in.command;
 
-public record RequestShareCommand(
+public record RetrieveSecretShareCommand(
         String secretId,
         String userAddress,
         String walletSignature,
