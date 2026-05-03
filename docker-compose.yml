@@ -9,7 +9,7 @@ services:
     ports:
       - "8545:8545"
     volumes:
-      - ./deployments:/app/deployments
+      - ./custos-test-chain/deployments:/app/deployments
 
   postgres:
     image: postgres:18-alpine

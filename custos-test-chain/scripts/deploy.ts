@@ -13,6 +13,12 @@ async function main() {
 
   const [deployer, alice, bob] = await ethers.getSigners();
 
+  const HARDHAT_PRIVATE_KEYS = {
+    deployer: "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80",
+    alice: "0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d",
+    bob: "0x5de4111afa1a4b4decbf2c90db9948f15b3f944e7ad665bab4c520d8515d8c"
+  };
+
   console.log("[Deploy] Deployer:", deployer.address);
   console.log("[Deploy] Alice:", alice.address);
   console.log("[Deploy] Bob:", bob.address);
@@ -62,9 +68,18 @@ async function main() {
     chainId: 31337,
     rpcUrl: "http://localhost:8545",
     accounts: {
-      deployer: deployer.address,
-      alice: alice.address,
-      bob: bob.address
+        deployer: {
+            address: deployer.address,
+            privateKey: HARDHAT_PRIVATE_KEYS.deployer
+          },
+          alice: {
+            address: alice.address,
+            privateKey: HARDHAT_PRIVATE_KEYS.alice
+          },
+          bob: {
+            address: bob.address,
+            privateKey: HARDHAT_PRIVATE_KEYS.bob
+          }
     },
     contracts: {
       testERC721: erc721Address,

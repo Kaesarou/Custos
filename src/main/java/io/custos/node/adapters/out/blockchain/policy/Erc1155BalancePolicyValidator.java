@@ -2,12 +2,12 @@ package io.custos.node.adapters.out.blockchain.policy;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.custos.node.application.service.ChainRpcResolver;
-import io.custos.node.domain.Erc1155BalancePolicyData;
-import io.custos.node.domain.PolicyValidationResult;
-import io.custos.node.application.port.out.AccessPolicyValidator;
-import io.custos.node.domain.model.AccessPolicy;
-import io.custos.node.domain.model.PolicyType;
+import io.custos.node.core.application.service.ChainRpcResolver;
+import io.custos.node.core.domain.Erc1155BalancePolicyData;
+import io.custos.node.core.domain.PolicyValidationResult;
+import io.custos.node.core.application.port.out.AccessPolicyValidator;
+import io.custos.node.core.domain.model.AccessPolicy;
+import io.custos.node.core.domain.model.PolicyType;
 import org.springframework.stereotype.Service;
 import org.web3j.abi.FunctionEncoder;
 import org.web3j.abi.FunctionReturnDecoder;

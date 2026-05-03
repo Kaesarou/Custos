@@ -1,9 +1,9 @@
 package io.custos.node.adapters.in.web;
 
-import io.custos.node.application.exception.InvalidPublisherSignatureException;
-import io.custos.node.application.exception.InvalidWalletSignatureException;
-import io.custos.node.application.exception.SecretAccessDeniedException;
-import io.custos.node.application.exception.SecretNotFoundException;
+import io.custos.node.core.application.exception.InvalidPublisherSignatureException;
+import io.custos.node.core.application.exception.InvalidWalletSignatureException;
+import io.custos.node.core.application.exception.SecretAccessDeniedException;
+import io.custos.node.core.application.exception.SecretNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

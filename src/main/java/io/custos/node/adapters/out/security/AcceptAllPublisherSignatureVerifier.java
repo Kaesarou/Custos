@@ -1,7 +1,7 @@
 package io.custos.node.adapters.out.security;
 
-import io.custos.node.application.port.in.command.RegisterSecretShareCommand;
-import io.custos.node.application.port.out.PublisherSignatureVerifier;
+import io.custos.node.core.application.port.in.command.RegisterSecretShareCommand;
+import io.custos.node.core.application.port.out.PublisherSignatureVerifier;
 
 public class AcceptAllPublisherSignatureVerifier implements PublisherSignatureVerifier {
 

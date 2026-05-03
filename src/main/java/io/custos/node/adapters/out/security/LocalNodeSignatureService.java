@@ -1,6 +1,6 @@
 package io.custos.node.adapters.out.security;
 
-import io.custos.node.application.port.out.NodeSignatureService;
+import io.custos.node.core.application.port.out.NodeSignatureService;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;

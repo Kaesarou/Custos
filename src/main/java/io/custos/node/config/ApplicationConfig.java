@@ -1,18 +1,13 @@
 package io.custos.node.config;
 
-import io.custos.node.adapters.out.persistence.jpa.JpaSecretShareRepository;
-import io.custos.node.adapters.out.persistence.jpa.SpringDataSecretShareRepository;
 import io.custos.node.adapters.out.security.AcceptAllPublisherSignatureVerifier;
-import io.custos.node.adapters.out.security.AcceptAllWalletSignatureVerifier;
 import io.custos.node.adapters.out.security.Base64ShareProtectionService;
 import io.custos.node.adapters.out.security.LocalNodeSignatureService;
-import io.custos.node.application.port.in.RegisterSecretShareService;
-import io.custos.node.application.port.in.RequestShareService;
-import io.custos.node.application.port.out.*;
-import io.custos.node.application.service.ChainRpcResolver;
-import io.custos.node.application.service.PolicyValidationService;
-import io.custos.node.application.service.RegisterSecretShareServiceImpl;
-import io.custos.node.application.service.RequestShareServiceImpl;
+import io.custos.node.core.application.port.in.RegisterSecretShareService;
+import io.custos.node.core.application.port.in.RequestShareService;
+import io.custos.node.application.service.*;
+import io.custos.node.core.application.port.out.*;
+import io.custos.node.core.application.service.*;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,20 +19,8 @@ import java.util.List;
 public class ApplicationConfig {
 
     @Bean
-    SecretShareRepository secretShareRepository(
-            SpringDataSecretShareRepository springDataSecretShareRepository
-    ) {
-        return new JpaSecretShareRepository(springDataSecretShareRepository);
-    }
-
-    @Bean
     PublisherSignatureVerifier publisherSignatureVerifier() {
         return new AcceptAllPublisherSignatureVerifier();
-    }
-
-    @Bean
-    WalletSignatureVerifier walletSignatureVerifier() {
-        return new AcceptAllWalletSignatureVerifier();
     }
 
     @Bean
@@ -69,6 +52,7 @@ public class ApplicationConfig {
             SecretShareRepository repository,
             WalletSignatureVerifier walletSignatureVerifier,
             PolicyValidationService policyValidationService,
+            WalletNonceService walletNonceService,
             ShareProtectionService shareProtectionService,
             NodeSignatureService nodeSignatureService
     ) {
@@ -77,6 +61,7 @@ public class ApplicationConfig {
                 repository,
                 walletSignatureVerifier,
                 policyValidationService,
+                walletNonceService,
                 shareProtectionService,
                 nodeSignatureService
         );
