@@ -1,8 +1,8 @@
 services:
   custos-test-chain:
     build:
-      context: custos-test-chain
-      dockerfile: custos-test-chain/Dockerfile
+      context: ./custos-test-chain
+      dockerfile: Dockerfile
     container_name: custos-test-chain
     profiles:
       - dev
@@ -38,7 +38,7 @@ services:
 
   custos-node:
     build:
-      context: ..
+      context: .
       dockerfile: Dockerfile
     image: custos-node:0.1.0-SNAPSHOT
     container_name: custos-node

@@ -1,3 +1,4 @@
+/.idea
 /node/target/
-/.idea/
+/node/.idea/
 /node/custos-test-chain/tools/node_modules/

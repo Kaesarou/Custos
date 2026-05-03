@@ -8,7 +8,7 @@
     },
     "alice": {
       "address": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-      "privateKey": "0x59c6995e998f97a5a004497e5da8ea9bd324e7c6788f2a913fb62f1e2c9a14a5"
+      "privateKey": "0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d"
     },
     "bob": {
       "address": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
