@@ -2,7 +2,9 @@ package io.custos.node.adapters.out.security;
 
 import io.custos.node.core.application.port.in.command.StoreSecretShareCommand;
 import io.custos.node.core.application.port.out.PublisherSignatureVerifier;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AcceptAllPublisherSignatureVerifier implements PublisherSignatureVerifier {
 
     @Override

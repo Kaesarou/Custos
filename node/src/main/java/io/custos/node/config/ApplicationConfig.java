@@ -1,5 +1,6 @@
 package io.custos.node.config;
 
+import io.custos.node.adapters.out.blockchain.ChainRpcResolver;
 import io.custos.node.adapters.out.security.AcceptAllPublisherSignatureVerifier;
 import io.custos.node.adapters.out.security.Base64ShareProtectionService;
 import io.custos.node.adapters.out.security.LocalNodeSignatureService;
@@ -18,11 +19,6 @@ import java.util.List;
 public class ApplicationConfig {
 
     @Bean
-    PublisherSignatureVerifier publisherSignatureVerifier() {
-        return new AcceptAllPublisherSignatureVerifier();
-    }
-
-    @Bean
     PolicyValidationService policyValidationService(List<AccessPolicyValidator> accessPolicyValidators) {
         return new PolicyValidationService(accessPolicyValidators);
     }
@@ -30,16 +26,6 @@ public class ApplicationConfig {
     @Bean
     WalletNonceService walletNonceService(WalletNonceRepository walletNonceRepository) {
         return new WalletNonceService(walletNonceRepository);
-    }
-
-    @Bean
-    ShareProtectionService shareProtectionService() {
-        return new Base64ShareProtectionService();
-    }
-
-    @Bean
-    NodeSignatureService nodeSignatureService() {
-        return new LocalNodeSignatureService();
     }
 
     @Bean
@@ -69,10 +55,5 @@ public class ApplicationConfig {
                 shareProtectionService,
                 nodeSignatureService
         );
-    }
-
-    @Bean
-    ChainRpcResolver chainRpcResolver(CustosProperties custosProperties) {
-        return new ChainRpcResolver(custosProperties);
     }
 }

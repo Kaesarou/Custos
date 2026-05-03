@@ -1,10 +1,12 @@
 package io.custos.node.adapters.out.security;
 
 import io.custos.node.core.application.port.out.ShareProtectionService;
+import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
+@Service
 public class Base64ShareProtectionService implements ShareProtectionService {
 
     @Override

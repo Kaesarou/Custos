@@ -3,7 +3,7 @@ package io.custos.node.adapters.out.blockchain.policy;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.custos.node.core.application.port.out.AccessPolicyValidator;
-import io.custos.node.core.application.service.ChainRpcResolver;
+import io.custos.node.adapters.out.blockchain.ChainRpcResolver;
 import io.custos.node.core.domain.EvmErc1155BalancePolicyData;
 import io.custos.node.core.domain.PolicyValidationResult;
 import io.custos.node.core.domain.model.AccessPolicy;

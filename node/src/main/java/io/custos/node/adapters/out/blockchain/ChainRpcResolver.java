@@ -1,9 +1,11 @@
-package io.custos.node.core.application.service;
+package io.custos.node.adapters.out.blockchain;
 
 import io.custos.node.config.CustosProperties;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class ChainRpcResolver {
 
     private final CustosProperties properties;
