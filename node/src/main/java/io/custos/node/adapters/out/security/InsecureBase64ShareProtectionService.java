@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 @Service
-public class Base64ShareProtectionService implements ShareProtectionService {
+public class InsecureBase64ShareProtectionService implements ShareProtectionService {
 
     @Override
     public String protect(String encryptedShare, String readerPublicKey) {

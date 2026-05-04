@@ -1,5 +1,6 @@
 package io.custos.node.core.domain.model;
 
+import java.time.Clock;
 import java.time.Instant;
 import java.util.Objects;
 
@@ -16,7 +17,12 @@ public record UsedWalletNonce(
         Objects.requireNonNull(usedAt, "usedAt is required");
     }
 
-    public static UsedWalletNonce of(String userAddress, String secretId, String nonce) {
-        return new UsedWalletNonce(userAddress, secretId, nonce, Instant.now());
+    public static UsedWalletNonce of(Clock clock, String userAddress, String secretId, String nonce) {
+
+        return new UsedWalletNonce(normalizeAddress(userAddress), secretId, nonce, Instant.now(clock));
+    }
+
+    private static String normalizeAddress(String userAddress) {
+        return userAddress.toLowerCase();
     }
 }

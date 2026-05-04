@@ -2,7 +2,7 @@ package io.custos.node.adapters.out.security;
 
 import io.custos.node.core.application.exception.InvalidWalletSignatureException;
 import io.custos.node.core.application.port.out.WalletSignatureVerifier;
-import io.custos.node.core.application.service.RetrieveSecretSignatureChallenge;
+import io.custos.node.core.domain.RetrieveSecretShareSignatureChallenge;
 import org.springframework.stereotype.Service;
 import org.web3j.crypto.Keys;
 import org.web3j.crypto.Sign;
@@ -26,7 +26,7 @@ public class EvmPersonalSignVerifier implements WalletSignatureVerifier {
     ) {
         validateInputs(userAddress, nonce, walletSignature);
 
-        String message = new RetrieveSecretSignatureChallenge(
+        String message = new RetrieveSecretShareSignatureChallenge(
                 secretId,
                 userAddress,
                 nonce

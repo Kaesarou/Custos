@@ -7,23 +7,27 @@ import io.custos.node.core.application.port.out.PublisherSignatureVerifier;
 import io.custos.node.core.application.port.out.SecretShareRepository;
 import io.custos.node.core.domain.model.StoredSecretShare;
 
+import java.time.Clock;
 import java.time.Instant;
 
 public class StoreSecretShareService implements StoreSecretShareUseCase {
 
+    private final Clock clock;
     private final SecretShareRepository repository;
     private final PublisherSignatureVerifier publisherSignatureVerifier;
 
     public StoreSecretShareService(
+            Clock clock,
             SecretShareRepository repository,
             PublisherSignatureVerifier publisherSignatureVerifier
     ) {
+        this.clock = clock;
         this.repository = repository;
         this.publisherSignatureVerifier = publisherSignatureVerifier;
     }
 
     @Override
-    public void register(StoreSecretShareCommand command) {
+    public void store(StoreSecretShareCommand command) {
         if (!publisherSignatureVerifier.isValid(command)) {
             throw new InvalidPublisherSignatureException();
         }
@@ -33,7 +37,7 @@ public class StoreSecretShareService implements StoreSecretShareUseCase {
                 command.encryptedShare(),
                 command.accessPolicy(),
                 command.publisherAddress(),
-                Instant.now()
+                Instant.now(clock)
         ));
     }
 }

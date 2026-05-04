@@ -1,33 +1,21 @@
 package io.custos.node.core.application.service;
 
-import io.custos.node.core.application.exception.InvalidWalletSignatureException;
-import io.custos.node.core.application.port.out.WalletNonceRepository;
+import io.custos.node.core.application.port.out.WalletNonceStore;
 import io.custos.node.core.domain.model.UsedWalletNonce;
-import jakarta.transaction.Transactional;
-import org.springframework.dao.DataIntegrityViolationException;
 
-import static io.custos.node.core.application.exception.errorcode.WalletSignatureErrorCode.NONCE_ALREADY_USED;
+import java.time.Clock;
 
 public class WalletNonceService {
 
-    private final WalletNonceRepository repository;
+    private final Clock clock;
+    private final WalletNonceStore nonceStore;
 
-    public WalletNonceService(WalletNonceRepository repository) {
-        this.repository = repository;
+    public WalletNonceService(Clock clock, WalletNonceStore nonceStore) {
+        this.clock = clock;
+        this.nonceStore = nonceStore;
     }
 
-    @Transactional
     public void markNonceAsUsed(String userAddress, String secretId, String nonce) {
-        String normalizedAddress = userAddress.toLowerCase();
-
-        if (repository.existsByUserAddressAndSecretIdAndNonce(normalizedAddress, secretId, nonce)) {
-            throw new InvalidWalletSignatureException(NONCE_ALREADY_USED, "Nonce already used");
-        }
-
-        try {
-            repository.save(UsedWalletNonce.of(normalizedAddress, secretId, nonce));
-        } catch (DataIntegrityViolationException e) {
-            throw new InvalidWalletSignatureException(NONCE_ALREADY_USED, "Nonce already used");
-        }
+        nonceStore.markAsUsed(UsedWalletNonce.of(this.clock, userAddress, secretId, nonce));
     }
 }

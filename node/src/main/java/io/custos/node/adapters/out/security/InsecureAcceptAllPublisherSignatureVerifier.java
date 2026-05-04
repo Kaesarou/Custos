@@ -5,7 +5,7 @@ import io.custos.node.core.application.port.out.PublisherSignatureVerifier;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AcceptAllPublisherSignatureVerifier implements PublisherSignatureVerifier {
+public class InsecureAcceptAllPublisherSignatureVerifier implements PublisherSignatureVerifier {
 
     @Override
     public boolean isValid(StoreSecretShareCommand command) {

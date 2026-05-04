@@ -5,7 +5,6 @@ import io.custos.node.core.application.port.out.AccessPolicyValidator;
 import io.custos.node.core.domain.PolicyValidationResult;
 import io.custos.node.core.domain.model.AccessPolicy;
 import io.custos.node.core.domain.model.PolicyType;
-import org.springframework.stereotype.Service;
 
 import java.util.EnumMap;
 import java.util.List;
@@ -20,7 +19,16 @@ public class PolicyValidationService {
 
     public PolicyValidationService(List<AccessPolicyValidator> validators) {
         for (AccessPolicyValidator validator : validators) {
-            this.validators.put(validator.supportedType(), validator);
+            AccessPolicyValidator previous = this.validators.putIfAbsent(
+                    validator.supportedType(),
+                    validator
+            );
+
+            if (previous != null) {
+                throw new IllegalStateException(
+                        "Duplicate access policy validator for type " + validator.supportedType()
+                );
+            }
         }
     }
 

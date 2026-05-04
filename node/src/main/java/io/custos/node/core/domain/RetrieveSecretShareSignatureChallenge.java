@@ -1,13 +1,13 @@
-package io.custos.node.core.application.service;
+package io.custos.node.core.domain;
 
-public record RetrieveSecretSignatureChallenge(
+public record RetrieveSecretShareSignatureChallenge(
         String secretId,
         String userAddress,
         String nonce
 ) {
     public String message() {
         return """
-            Custos retrieve secret
+            Custos retrieve secret share
             secretId: %s
             userAddress: %s
             nonce: %s

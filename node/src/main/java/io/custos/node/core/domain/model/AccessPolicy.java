@@ -13,5 +13,15 @@ public record AccessPolicy(
         Objects.requireNonNull(type, "type is required");
         Objects.requireNonNull(contractAddress, "contractAddress is required");
         Objects.requireNonNull(policyData, "policyData is required");
+
+        if (chainId <= 0) {
+            throw new IllegalArgumentException("chainId must be positive");
+        }
+        if (contractAddress.isBlank()) {
+            throw new IllegalArgumentException("contractAddress is required");
+        }
+        if (policyData.isBlank()) {
+            throw new IllegalArgumentException("policyData is required");
+        }
     }
 }

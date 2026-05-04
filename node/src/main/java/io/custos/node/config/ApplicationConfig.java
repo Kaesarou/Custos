@@ -1,17 +1,17 @@
 package io.custos.node.config;
 
-import io.custos.node.adapters.out.blockchain.ChainRpcResolver;
-import io.custos.node.adapters.out.security.AcceptAllPublisherSignatureVerifier;
-import io.custos.node.adapters.out.security.Base64ShareProtectionService;
-import io.custos.node.adapters.out.security.LocalNodeSignatureService;
-import io.custos.node.core.application.port.in.StoreSecretShareUseCase;
 import io.custos.node.core.application.port.in.RetrieveSecretShareUseCase;
+import io.custos.node.core.application.port.in.StoreSecretShareUseCase;
 import io.custos.node.core.application.port.out.*;
-import io.custos.node.core.application.service.*;
+import io.custos.node.core.application.service.PolicyValidationService;
+import io.custos.node.core.application.service.RetrieveSecretShareService;
+import io.custos.node.core.application.service.StoreSecretShareService;
+import io.custos.node.core.application.service.WalletNonceService;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.Clock;
 import java.util.List;
 
 @Configuration
@@ -19,26 +19,33 @@ import java.util.List;
 public class ApplicationConfig {
 
     @Bean
+    Clock clock() {
+        return Clock.systemUTC();
+    }
+
+    @Bean
     PolicyValidationService policyValidationService(List<AccessPolicyValidator> accessPolicyValidators) {
         return new PolicyValidationService(accessPolicyValidators);
     }
 
     @Bean
-    WalletNonceService walletNonceService(WalletNonceRepository walletNonceRepository) {
-        return new WalletNonceService(walletNonceRepository);
+    WalletNonceService walletNonceService(Clock clock, WalletNonceStore walletNonceStore) {
+        return new WalletNonceService(clock, walletNonceStore);
     }
 
     @Bean
-    StoreSecretShareUseCase registerSecretShareUseCase(
+    StoreSecretShareUseCase storeSecretShareUseCase(
+            Clock clock,
             SecretShareRepository repository,
             PublisherSignatureVerifier publisherSignatureVerifier
     ) {
-        return new StoreSecretShareService(repository, publisherSignatureVerifier);
+        return new StoreSecretShareService(clock, repository, publisherSignatureVerifier);
     }
 
     @Bean
-    RetrieveSecretShareUseCase requestShareUseCase(
+    RetrieveSecretShareUseCase retrieveSecretShareUseCase(
             CustosProperties custosProperties,
+            Clock clock,
             SecretShareRepository repository,
             WalletSignatureVerifier walletSignatureVerifier,
             PolicyValidationService policyValidationService,
@@ -48,6 +55,7 @@ public class ApplicationConfig {
     ) {
         return new RetrieveSecretShareService(
                 custosProperties.nodeId(),
+                clock,
                 repository,
                 walletSignatureVerifier,
                 policyValidationService,

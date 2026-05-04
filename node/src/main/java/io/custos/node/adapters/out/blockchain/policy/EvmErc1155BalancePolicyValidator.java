@@ -2,8 +2,8 @@ package io.custos.node.adapters.out.blockchain.policy;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.custos.node.core.application.port.out.AccessPolicyValidator;
 import io.custos.node.adapters.out.blockchain.ChainRpcResolver;
+import io.custos.node.core.application.port.out.AccessPolicyValidator;
 import io.custos.node.core.domain.EvmErc1155BalancePolicyData;
 import io.custos.node.core.domain.PolicyValidationResult;
 import io.custos.node.core.domain.model.AccessPolicy;
@@ -57,7 +57,7 @@ public class EvmErc1155BalancePolicyValidator implements AccessPolicyValidator {
         }
 
         if (!WalletUtils.isValidAddress(policy.contractAddress())) {
-            return PolicyValidationResult.invalid(INVALID_VALIDATOR_CONTRACT.name());
+            return PolicyValidationResult.invalid(INVALID_CONTRACT_ADDRESS.name());
         }
 
         var rpcUrl = chainRpcResolver.resolveRpcUrl(policy.chainId());
