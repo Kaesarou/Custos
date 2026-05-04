@@ -1,4 +1,4 @@
-package io.custos.node.core.application.exception;
+package io.custos.node.core.application.exception.errorcode;
 
 public enum WalletSignatureErrorCode {
     MISSING_WALLET_SIGNATURE,

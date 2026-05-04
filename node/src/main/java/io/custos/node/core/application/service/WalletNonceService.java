@@ -6,7 +6,7 @@ import io.custos.node.core.domain.model.UsedWalletNonce;
 import jakarta.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import static io.custos.node.core.application.exception.WalletSignatureErrorCode.NONCE_ALREADY_USED;
+import static io.custos.node.core.application.exception.errorcode.WalletSignatureErrorCode.NONCE_ALREADY_USED;
 
 public class WalletNonceService {
 

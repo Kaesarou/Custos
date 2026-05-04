@@ -1,5 +1,7 @@
 package io.custos.node.core.application.exception;
 
+import io.custos.node.core.application.exception.errorcode.WalletSignatureErrorCode;
+
 public class InvalidWalletSignatureException extends RuntimeException {
 
     private final WalletSignatureErrorCode code;

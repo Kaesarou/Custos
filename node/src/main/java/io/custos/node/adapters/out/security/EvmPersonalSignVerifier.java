@@ -13,7 +13,7 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-import static io.custos.node.core.application.exception.WalletSignatureErrorCode.*;
+import static io.custos.node.core.application.exception.errorcode.WalletSignatureErrorCode.*;
 
 @Service
 public class EvmPersonalSignVerifier implements WalletSignatureVerifier {

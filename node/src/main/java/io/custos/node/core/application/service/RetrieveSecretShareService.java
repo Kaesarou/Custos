@@ -24,14 +24,7 @@ public class RetrieveSecretShareService implements RetrieveSecretShareUseCase {
     private final ShareProtectionService shareProtectionService;
     private final NodeSignatureService nodeSignatureService;
 
-    public RetrieveSecretShareService(
-            String nodeId,
-            SecretShareRepository repository,
-            WalletSignatureVerifier walletSignatureVerifier,
-            PolicyValidationService policyValidationService, WalletNonceService walletNonceService,
-            ShareProtectionService shareProtectionService,
-            NodeSignatureService nodeSignatureService
-    ) {
+    public RetrieveSecretShareService(String nodeId, SecretShareRepository repository, WalletSignatureVerifier walletSignatureVerifier, PolicyValidationService policyValidationService, WalletNonceService walletNonceService, ShareProtectionService shareProtectionService, NodeSignatureService nodeSignatureService) {
         this.nodeId = nodeId;
         this.repository = repository;
         this.walletSignatureVerifier = walletSignatureVerifier;
@@ -44,41 +37,26 @@ public class RetrieveSecretShareService implements RetrieveSecretShareUseCase {
     @Override
     public ShareDelivery requestShare(RetrieveSecretShareCommand command) {
 
-        walletSignatureVerifier.verifyRetrieveSecretSignature(
-                command.secretId(),
-                command.userAddress(),
-                command.nonce(),
-                command.walletSignature()
-        );
+        walletSignatureVerifier.verifyRetrieveSecretSignature(command.secretId(), command.userAddress(),
+                command.nonce(), command.walletSignature());
 
-        walletNonceService.markNonceAsUsed(
-                command.userAddress(),
-                command.secretId(),
-                command.nonce()
-        );
+        walletNonceService.markNonceAsUsed(command.userAddress(), command.secretId(), command.nonce());
 
         StoredSecretShare stored = repository.findBySecretId(command.secretId())
                 .orElseThrow(() -> new SecretNotFoundException(command.secretId()));
 
-        PolicyValidationResult policyValidationResult = policyValidationService.validate(stored.accessPolicy(), command.userAddress());
+        PolicyValidationResult policyValidationResult = policyValidationService.validate(stored.accessPolicy(),
+                command.userAddress());
         if (!policyValidationResult.isValid()) {
-            throw new SecretAccessDeniedException(command.secretId(), command.userAddress());
+            throw new SecretAccessDeniedException(command.secretId(), command.userAddress(),
+                    policyValidationResult.reason());
         }
 
-        String protectedShare = shareProtectionService.protect(
-                stored.encryptedShare(),
-                command.readerPublicKey()
-        );
+        String protectedShare = shareProtectionService.protect(stored.encryptedShare(), command.readerPublicKey());
 
         String payloadToSign = command.secretId() + ":" + command.userAddress() + ":" + protectedShare;
         String nodeSignature = nodeSignatureService.sign(payloadToSign);
 
-        return new ShareDelivery(
-                command.secretId(),
-                nodeId,
-                protectedShare,
-                nodeSignature,
-                Instant.now()
-        );
+        return new ShareDelivery(command.secretId(), nodeId, protectedShare, nodeSignature, Instant.now());
     }
 }

@@ -24,6 +24,9 @@ import org.web3j.protocol.http.HttpService;
 import java.math.BigInteger;
 import java.util.List;
 
+import static io.custos.node.core.application.exception.errorcode.PolicyErrorCode.*;
+import static io.custos.node.core.application.exception.errorcode.WalletErrorCode.INVALID_WALLET;
+
 @Service
 public class EvmErc1155BalancePolicyValidator implements AccessPolicyValidator {
 
@@ -46,21 +49,21 @@ public class EvmErc1155BalancePolicyValidator implements AccessPolicyValidator {
     @Override
     public PolicyValidationResult validate(AccessPolicy policy, String walletAddress) {
         if (policy == null || policy.type() != PolicyType.EVM_ERC1155_BALANCE) {
-            return PolicyValidationResult.invalid("UNSUPPORTED_POLICY_TYPE");
+            return PolicyValidationResult.invalid(UNSUPPORTED_POLICY_TYPE.name());
         }
 
         if (!WalletUtils.isValidAddress(walletAddress)) {
-            return PolicyValidationResult.invalid("INVALID_WALLET");
+            return PolicyValidationResult.invalid(INVALID_WALLET.name());
         }
 
         if (!WalletUtils.isValidAddress(policy.contractAddress())) {
-            return PolicyValidationResult.invalid("INVALID_VALIDATOR_CONTRACT");
+            return PolicyValidationResult.invalid(INVALID_VALIDATOR_CONTRACT.name());
         }
 
         var rpcUrl = chainRpcResolver.resolveRpcUrl(policy.chainId());
 
         if (rpcUrl.isEmpty()) {
-            return PolicyValidationResult.invalid("CHAIN_NOT_CONFIGURED");
+            return PolicyValidationResult.invalid(CHAIN_NOT_CONFIGURED.name());
         }
 
         EvmErc1155BalancePolicyData policyData;
@@ -68,7 +71,7 @@ public class EvmErc1155BalancePolicyValidator implements AccessPolicyValidator {
         try {
             policyData = objectMapper.readValue(policy.policyData(), EvmErc1155BalancePolicyData.class);
         } catch (Exception e) {
-            return PolicyValidationResult.invalid("INVALID_POLICY_DATA");
+            return PolicyValidationResult.invalid(INVALID_POLICY_DATA.name());
         }
 
         BigInteger tokenId;
@@ -78,11 +81,11 @@ public class EvmErc1155BalancePolicyValidator implements AccessPolicyValidator {
             tokenId = new BigInteger(policyData.tokenId());
             minBalance = new BigInteger(policyData.minBalance());
         } catch (Exception e) {
-            return PolicyValidationResult.invalid("INVALID_POLICY_DATA");
+            return PolicyValidationResult.invalid(INVALID_POLICY_DATA.name());
         }
 
         if (tokenId.signum() < 0 || minBalance.signum() <= 0) {
-            return PolicyValidationResult.invalid("INVALID_POLICY_DATA");
+            return PolicyValidationResult.invalid(INVALID_POLICY_DATA.name());
         }
 
         try {
@@ -97,10 +100,10 @@ public class EvmErc1155BalancePolicyValidator implements AccessPolicyValidator {
                 return PolicyValidationResult.valid();
             }
 
-            return PolicyValidationResult.invalid("INSUFFICIENT_BALANCE");
+            return PolicyValidationResult.invalid(INSUFFICIENT_BALANCE.name());
 
         } catch (Exception e) {
-            return PolicyValidationResult.invalid("ON_CHAIN_CALL_FAILED");
+            return PolicyValidationResult.invalid(ON_CHAIN_CALL_FAILED.name());
         }
     }
 
